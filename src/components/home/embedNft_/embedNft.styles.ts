@@ -36,6 +36,7 @@ export const EmbedNft = styled.div({
 
   ".embed-actions": {
     display: "flex",
+    flexDirection: 'column',
     gap: 10,
   },
 });

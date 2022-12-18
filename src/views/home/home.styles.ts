@@ -21,13 +21,16 @@ export const Home = styled.div({
 
   ".stenographic-section": {
     display: "flex",
+    flexFlow: 'wrap',
     width: "100%",
 
     '.embed-nft-section': {
+      minWidth: "400px",
       width: '50%',
     },
 
     '.decode-nft-section': {
+      minWidth: "400px",
       width: '50%',
     }
   },
