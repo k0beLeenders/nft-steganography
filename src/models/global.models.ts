@@ -25,9 +25,19 @@ export interface SerializedError {
 }
 
 export interface IConversionPreset {
-  height: number
-  width: number
+  height: number;
+  width: number;
 }
 
 export type IApiStatus = "idle" | "loading" | "success" | "failed";
 export type IError = SerializedError | any;
+
+export type IConversionPresetType = "NONE" | "TWITTER";
+export interface IConversionPresetForm {
+  preset: IConversionPresetType;
+}
+
+export interface IConversionPresetMap {
+  preset: IConversionPresetType;
+  value?: IConversionPreset;
+}

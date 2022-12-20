@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 import * as consts from "consts";
 
-export const EmbedNft = styled.div({
+export const EmbedNft = styled.form({
   display: "flex",
   gap: "15px",
   width: "100%",
