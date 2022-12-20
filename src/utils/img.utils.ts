@@ -1,3 +1,5 @@
+import * as models from "models";
+
 async function loadImg(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     let image = new Image();
@@ -6,6 +8,17 @@ async function loadImg(url: string): Promise<HTMLImageElement> {
     image.onload = () => resolve(image);
     image.onerror = (e) => reject(e);
   });
+}
+
+function canvas_scale(img: HTMLImageElement, width: number) {
+  var canvas = document.createElement("canvas"),
+    ctx = canvas.getContext("2d");
+
+  canvas.width = width;
+  canvas.height = canvas.width * (img.height / img.width);
+  ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  return canvas.toDataURL();
 }
 
 function args(i: number) {
@@ -45,7 +58,8 @@ function findNextPrime(n: number) {
 
 export async function encode(
   message: string,
-  image: Readonly<HTMLImageElement>
+  image: Readonly<HTMLImageElement>,
+  options?: models.IConversionPreset
 ) {
   const t: number = 3;
   const threshold: number = 1;
@@ -75,9 +89,17 @@ export async function encode(
   }
 
   shadowCanvas.style.display = "none";
-  shadowCanvas.width = _image.width;
-  shadowCanvas.height = _image.height;
-  shadowCtx.drawImage(_image, 0, 0);
+  shadowCanvas.width = options?.width || _image.width;
+  shadowCanvas.height = options?.height || _image.width;
+  shadowCtx.drawImage(_image, 0, 0, shadowCanvas.width, shadowCanvas.height);
+
+  //   var canvas = document.createElement('canvas'),
+  //   ctx = canvas.getContext("2d");
+
+  // canvas.width = width;
+  // canvas.height = canvas.width * (img.height / img.width);
+  // ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
   const imageData = shadowCtx.getImageData(
     0,
     0,
@@ -85,6 +107,7 @@ export async function encode(
     shadowCanvas.height
   );
   const data = imageData.data;
+  // console.log(data)
 
   // bundlesPerChar ... Count of full t-bit-sized bundles per Character
   // overlapping ... Count of bits of the currently handled character which are not handled during each run
@@ -183,9 +206,25 @@ export async function encode(
     data[index * 4 + 3] = delimiter[index - (offset + subOffset)];
   }
   // Clear remaining data
-  for (let i = (index + 1) * 4 + 3; i < data.length; i += 4) {
+
+  for (let i = (index + 1) * 4 + 3; i < (index + 1) * 4 + 45; i += 4) {
     data[i] = 255;
   }
+
+  for (let i = (index + 1) * 4 + 45; i < (index + 1) * 4 + 52; i += 4) {
+    data[i] = 0;
+  }
+
+  // console.log(data.length - (20 * 4 + 1))
+
+  // for (let i = data.length - (20000 * 4 + 1); i < data.length; i += 4) {
+  //   data[i] = 0;
+  // }
+
+  // for (let i = 0; i <= 243000; i ++) {
+  //   data[i] = 0;
+  //   // data[7] = 0
+  // }
 
   shadowCtx.putImageData(
     new ImageData(data, imageData.width, imageData.height),

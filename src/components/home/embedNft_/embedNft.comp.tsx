@@ -1,6 +1,7 @@
 import React, { FC, useState, useRef } from "react";
 
 import * as utils from "utils";
+import * as consts from 'consts'
 
 import * as globalComps from "components/global";
 
@@ -32,7 +33,7 @@ export const EmbedNftComp: FC<IEmbedNftProps> = ({}) => {
 
   const embedImage = async () => {
     if (imageRef?.current) {
-      const encodedImage = await utils.encode(mint, imageRef.current);
+      const encodedImage = await utils.encode(mint, imageRef.current, consts.TWITTER_PRESET);
       setEncodedImg(encodedImage);
       console.log(encodedImage);
     }

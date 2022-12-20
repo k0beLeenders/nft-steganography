@@ -24,5 +24,10 @@ export interface SerializedError {
   stack?: string;
 }
 
+export interface IConversionPreset {
+  height: number
+  width: number
+}
+
 export type IApiStatus = "idle" | "loading" | "success" | "failed";
 export type IError = SerializedError | any;

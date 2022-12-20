@@ -63,6 +63,8 @@ export const DecodeNftComp: FC<IDecodeNftProps> = ({}) => {
 
   const decodeImage = async () => {
     if (imageRef?.current) {
+      // const aml = await utils.encode("E6SmUC27qUzcTRYSt7djCnrPKhTWRa5nq5shMfTpXPCF", imageRef.current);
+      setOwner("")
       const mint = await utils.decode(imageRef.current);
 
       const mintKey = new web3.PublicKey(mint);
